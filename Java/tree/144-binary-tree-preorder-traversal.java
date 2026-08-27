@@ -72,8 +72,11 @@
 
 // @lc code=start
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
+
 
 /**
  * Definition for a binary tree node.
@@ -91,22 +94,55 @@ import java.util.List;
  * }
  */
 class Solution {
+
     /**
+     * Logic: Root -> Left -> Right
+     * - Pop the top node from stack and record its value (Root).
+     * - Push the RIGHT child into the stack first, then LEFT child.
+     *  Due to Stack (LIFO - Last In First Out), the LEFT child pops first and is processed next. 
+     * 
      * Time complexity: O(n) - Every node is visited exactly once.
      * Space complexity: O(h) - Where h is the height of the tree (O(logn) for balanced trees)
      */
     public List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> result = new ArrayList<>();
-        traverse(root, result);
-        return result;
+         List<Integer> result = new ArrayList<>();
+         if (root==null) {
+            return result;
+         }
+
+         Deque<TreeNode> stack = new ArrayDeque<>();
+         stack.push(root);
+
+         while(!stack.isEmpty()){
+            TreeNode node = stack.pop();
+            result.add(node.val);
+
+            if(node.right!=null){
+                stack.push(node.right);
+            }
+            if(node.left!=null){
+                stack.push(node.left);
+            }
+         }
+         return result;
     }
 
-    private void traverse(TreeNode root, List<Integer> result){
-        if(root==null) return;
-        result.add(root.val);
-        traverse(root.left, result);
-        traverse(root.right, result);
-    }
+    /**
+     * Time complexity: O(n) - Every node is visited exactly once.
+     * Space complexity: O(h) - Where h is the height of the tree (O(logn) for balanced trees)
+     */
+    // public List<Integer> preorderTraversal(TreeNode root) {
+    //     List<Integer> result = new ArrayList<>();
+    //     traverse(root, result);
+    //     return result;
+    // }
+
+    // private void traverse(TreeNode root, List<Integer> result){
+    //     if(root==null) return;
+    //     result.add(root.val);
+    //     traverse(root.left, result);
+    //     traverse(root.right, result);
+    // }
 }
 // @lc code=end
 
